@@ -5,6 +5,7 @@ namespace Studio\Totem\Tests\Feature;
 use Studio\Totem\Totem;
 use Studio\Totem\Tests\TestCase;
 use Studio\Totem\Http\Middleware\Authenticate;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class AuthTest extends TestCase
 {
@@ -42,12 +43,11 @@ class AuthTest extends TestCase
         $this->assertEquals('response', $response);
     }
 
-    /**
-     * @test
-     * @expectedException \Symfony\Component\HttpKernel\Exception\HttpException
-     */
+    /** @test */
     public function auth_middleware_responds_with_403_on_failure()
     {
+        $this->expectException(HttpException::class);
+
         Totem::auth(function () {
             return false;
         });
